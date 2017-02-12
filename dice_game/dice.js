@@ -1,4 +1,3 @@
-//주사위만들기
 function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad){
   this.diceX=diceX;
   this.diceY=diceY;
@@ -6,8 +5,8 @@ function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad){
   this.diceHeight=diceHeiht;
   this.dotrad=dotrad;
   this.ch=1;
-  this.dotX=0;
-  this.doxY=0;
+  this.dots=[];
+ 
 }    
     
 Dice.prototype.startGame=function(){
@@ -35,55 +34,64 @@ Dice.prototype.makeDot=function(){
         case 5: this.draw1(); this.draw4(); break;
         case 6: this.draw4(); this.draw1Mid();break;
     }
+    
+    this.creatDot();
 }
 
 
 Dice.prototype.draw1=function(){
-    this.dotX=this.middleDiceX();
-    this.dotY=this.middleDiceY();    
-    this.creatDot();
+    var x=this.middleDiceX();
+    var y=this.middleDiceY();    
+    this.dots.push([x,y]);
 }
     
 Dice.prototype.draw2=function(){
-    this.dotX=this.dotRadFromDiceX(true);
-    this.dotY=this.dotRadFromDiceY(true);
-    this.creatDot();
-    this.dotX=this.dotRadFromDiceX(false);
-    this.dotY=this.dotRadFromDiceX(false);
-    this.creatDot();
+    var x,y=0;
+    x=this.dotRadFromDiceX(true);
+    y=this.dotRadFromDiceY(true);
+    this.dots.push([x,y]);
+    x=this.dotRadFromDiceX(false);
+    y=this.dotRadFromDiceX(false);
+    this.dots.push([x,y]);
 }
     
 Dice.prototype.draw4=function(){
-    this.dotX=this.dotRadFromDiceX(true);
-    this.dotY=this.dotRadFromDiceY(true);
-    this.creatDot();
-    this.dotX=this.dotRadFromDiceX(false);
-    this.dotY=this.dotRadFromDiceX(false);
-    this.creatDot();
-    this.dotX=this.dotRadFromDiceX(false);
-    this.dotY=this.dotRadFromDiceY(true);
-    this.creatDot();
-    this.dotX=this.dotRadFromDiceX(true);
-    this.dotY=this.dotRadFromDiceX(false);
-    this.creatDot();
+    var x,y=0;
+    x=this.dotRadFromDiceX(true);
+    y=this.dotRadFromDiceY(true);
+    this.dots.push([x,y]);
+    x=this.dotRadFromDiceX(false);
+    y=this.dotRadFromDiceX(false);
+    this.dots.push([x,y]);
+    x=this.dotRadFromDiceX(false);
+    y=this.dotRadFromDiceY(true);
+    this.dots.push([x,y]);
+    x=this.dotRadFromDiceX(true);
+    y=this.dotRadFromDiceX(false);
+    this.dots.push([x,y]);
 }
     
 Dice.prototype.draw1Mid=function(){
-    this.dotX=this.middleDiceX();
-    this.dotY=this.moveYDistance();
-    this.creatDot();
-    this.dotX=this.middleDiceX();
-    this.dotY=this.diceHeight-this.moveYDistance();
-    this.creatDot();
+    var x,y=0;
+    x=this.middleDiceX();
+    y=this.moveYDistance();
+    this.dots.push([x,y]);
+    x=this.middleDiceX();
+    y=this.diceHeight-this.moveYDistance();
+     this.dots.push([x,y]);
 }
     
 
 Dice.prototype.creatDot=function(){
-    ctx.beginPath();
-    ctx.arc(this.dotX+this.diceX, this.dotX+this.diceY, this.dotrad, 0, Math.PI*2, false);
-    ctx.closePath();
-    ctx.fill();
-    
+    var _this = this; 
+    this.dots.forEach(function(item, index, dots){
+        ctx.beginPath();
+        ctx.arc(item[0]+_this.diceX, item[1]+_this.diceY, _this.dotrad, 0, Math.PI*2, false);
+        ctx.closePath();
+        ctx.fill();
+    });
+    //초기화
+  this.dots=[];
 }
 
 Dice.prototype.dotRadFromDiceX=function(isOrigin){
@@ -110,5 +118,3 @@ Dice.prototype.middleDiceX=function(){
 Dice.prototype.middleDiceY=function(){
     return 0.5*this.diceHeight;
 }  
-
-
