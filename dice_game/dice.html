@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    
+</head>
+<body>
+<canvas id="canvas" width="1200" class="" height="500">
+</canvas>
+    
+<script src="./dice.js"> </script>   
+<script>
+//캔버스 설정 관련
+var cWidht=400;
+var cHeight=300;
+var ctx=document.getElementById('canvas').getContext('2d');
+ctx.fillStyle="#009966";
+ctx.lineWidth=5;
+
+//주사위2개
+var dice1 = new Dice(0,0,100,100,6);
+var dice2= new Dice(300,0,200,200,8);
+    
+var dice1Num=dice1.startGame();
+var dice2Num=dice2.startGame();    
+
+</script>
+</body>
+</html>
