@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+</head>
+<!--<body onLoad="init();">-->
+<body>
+    <canvas id="canvas" width="1200" class="" height="900">
+    </canvas>
+   <script src="./dice.js"> </script>   
+    <script>
+"use strict";
+//ball
+let ballx=50;
+let bally=50;
+let ballrad=20;  //반경
+
+//ball 수평, 수직 속도
+let ballvx=20;
+let ballvy=20;
+
+//canvas
+let ctx;
+        
+//box
+let boxx=20;
+let boxy=20;
+let boxWidth=300;
+let boxHeight=300;
+
+let rightBoundX;
+let bottomBoundY;
+let leftBoundX;
+let topBoundY;
+
+
+//변수들
+let moveBallInterval;
+let dice1;
+let lineWidth=5;
+        
+function init(){
+    ctx=document.getElementById("canvas").getContext("2d");
+    ctx.fillStyle="#009966";
+    ctx.lineWidth=lineWidth;
+    
+    
+    rightBoundX=boxx+boxWidth-lineWidth/2-ballrad; //오른쪽
+    bottomBoundY=boxy+boxHeight-lineWidth/2-ballrad; //아래
+    leftBoundX=boxx+lineWidth/2+ballrad;//왼쪽
+    topBoundY=boxy+lineWidth/2+ballrad; //위쪽
+    
+//circle 타원이면 원점, 나머지는 왼쪽모서리이므로 원타입이 아닐경우는 모두 box를 옮겨 그리기
+   ctx.beginPath();
+  // ctx.clearRect(boxx+ballrad/2, boxy+ballrad/2, boxWidth, boxHeight);
+ //  ctx.strokeRect(boxx+ballrad/2+ballrad/2, boxy, boxWidth, boxHeight);
+    
+     ctx.clearRect(boxx, boxy, boxWidth, boxHeight);
+   ctx.strokeRect(boxx, boxy, boxWidth, boxHeight);
+    //주사위2개
+    //ballx=boxWidth-(boxx+lineWidth/2);
+    ballx=rightBoundX;
+   // ctx.translate(ballrad, ballrad);
+   // dice1 = new Dice(ballx,ballvy,ballrad*2,ballrad*2,6);
+    
+   // dice1.startGame();
+  
+      //공그리기
+   ctx.beginPath();
+   ctx.arc(ballx,bally,ballrad, Math.PI*2, false); 
+   ctx.closePath();
+   ctx.fill();
+  //  moveBallInterval = setInterval(moveBall, 1000);
+}
+        
+
+function moveBall(){
+    ballx +=ballvx;
+    bally +=ballvy;
+    moveCheck();
+    dice1.setDiceX(ballx);
+    dice1.setDiceY(bally);
+    dice1.startGame();
+  
+}
+        
+function moveCheck(){
+    if(boxWidth-(boxx+lineWidth/2)>rightBoundX){
+       ballvx=-ballvx;
+       ballx=boxx-ballrad;
+    }
+    
+//     if(ballx-ballrad<leftBoundX){
+//       ballvx=-ballvx;
+//       ballx=leftBoundX+ballrad;
+//    }
+//    
+//     if(bally+ballrad>bottomBoundY){
+//       ballvy=-ballvy;
+//       bally=bottomBoundY-ballrad;
+//    }
+//    
+//    if(bally-ballrad<topBoundY){
+//       ballvy=-ballvy;
+//       bally=topBoundY+ballrad;
+//    }
+}
+
+    </script>
+</body>
+</html>

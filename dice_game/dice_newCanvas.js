@@ -1,18 +1,34 @@
-function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad){
-  this.diceX=diceX;
-  this.diceY=diceY;
-  this.diceWidth=diceWidth;
-  this.diceHeight=diceHeiht;
-  this.dotrad=dotrad;
+/*
+var diceParameter={
+    diceX:"",
+    diceY:"",
+    diceWidth:"",
+    diceHeiht:"",
+    dotrad:""
+};
+*/
+
+
+function Dice(diceParameter){
+  this.diceX=diceParameter.diceWidth/2;
+  this.diceY=diceParameter.diceHeiht/2;
+  this.diceWidth=diceParameter.diceWidth || 100;
+  this.diceHeight=diceParameter.diceHeiht || 100;
+  this.dotrad=diceParameter.dotrad || 6;
   this.ch=1;
   this.dots=[];
- 
+  this.canvas;
+  this.ctx;
+  this.makeCanvas(diceParameter.diceX, diceParameter.diceY);
 }    
     
+
+
 Dice.prototype.startGame=function(){
     this.changeDiceNumber();
     this.drawDice();
     this.makeDot();
+   
     return this.ch;
 }
     
@@ -21,8 +37,32 @@ Dice.prototype.changeDiceNumber=function(){
 }
 
 Dice.prototype.drawDice=function(){    
-    ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
-    ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+    //this.ctx.translate(this.canvas.width/2, this.canvas.width/2);
+    this.ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+   // this.ctx.rotate(60*Math.PI / 180);
+    this.ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+   // this.ctx.translate(-(this.canvas.width/2), -(this.canvas.width)/2);
+}
+
+Dice.prototype.makeCanvas=function(diceX, diceY){
+    this.canvas=document.createElement("canvas");
+    this.canvas.width=this.diceWidth*2;
+    this.canvas.height=this.diceHeight*2;
+    this.canvas.style.position="absolute";
+    this.canvas.style.border="1px solid";
+    this.canvas.style.top=diceY+"px";
+    this.canvas.style.left=diceX+"px";
+    this.ctx=this.canvas.getContext("2d");
+    this.ctx.fillStyle="#009966";
+    this.ctx.lineWidth=5;    
+    document.getElementById('canvas-area').appendChild(this.canvas);
+   
+   
+    
+}
+
+Dice.prototype.giveIDToCanvas=function(name){
+    this.canvas.id=name;
 }
 
 Dice.prototype.makeDot=function(){
@@ -84,14 +124,15 @@ Dice.prototype.draw1Mid=function(){
 
 Dice.prototype.creatDot=function(){
     var _this = this; 
-    this.dots.forEach(function(item, index, dots){
-        ctx.beginPath();
-        ctx.arc(item[0]+_this.diceX, item[1]+_this.diceY, _this.dotrad, 0, Math.PI*2, false);
-        ctx.closePath();
-        ctx.fill();
+    this.dots.map((item)=>{
+        this.ctx.beginPath();
+        this.ctx.arc(item[0]+_this.diceX, item[1]+_this.diceY, _this.dotrad, 0, Math.PI*2, false);
+        this.ctx.closePath();
+        this.ctx.fill();
     });
     //초기화
-  this.dots=[];
+    this.dots=[];
+
 }
 
 Dice.prototype.dotRadFromDiceX=function(isOrigin){
@@ -117,4 +158,4 @@ Dice.prototype.middleDiceX=function(){
     
 Dice.prototype.middleDiceY=function(){
     return 0.5*this.diceHeight;
-}  }  
+}  

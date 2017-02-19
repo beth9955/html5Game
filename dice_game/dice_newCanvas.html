@@ -9,9 +9,14 @@
 <h1>게임설명</h1>
 <p>처음 주사위 : 합이 7,11 이면 승리 // 2,3,12면 패 // 그 외는 계속</p>
 <p>그 다음 주사위 : 처음 주사위 숫자와 같으면 승 // 7이면 패 // 그외는 계속</p><br/><br/>
-
-<canvas id="canvas" width="1200" class="" height="200">
+<div id="canvas-area" style="position:relative; height:300px;" >
+    
+</div>
+<!--
+<canvas id="canvas" width="1200" class="" height="400">
 </canvas>
+-->
+
     
 <form name="diceForm" onSubmit="return diceGameStart();">
     판 : <input type="text" name="stage" value="첫 번째 던지기" />
@@ -19,14 +24,13 @@
     결과 : <input type="text" name="outcome" value="" />
     <input type="submit" value="주사위던지기"/>
 </form>
-<script src="./dice.js"> </script>   
+<script src="./dice_newCanvas.js"> </script>   
 <script>
 //캔버스 설정 관련
 var cWidht=400;
 var cHeight=300;
-var ctx=document.getElementById('canvas').getContext('2d');
-ctx.fillStyle="#009966";
-ctx.lineWidth=5;
+//var ctx=document.getElementById('canvas').getContext('2d');
+
     
 //폼태그 
 var stageInput=document.diceForm.stage;
@@ -34,15 +38,30 @@ var pointInput=document.diceForm.point;
 var outcomeInput=document.diceForm.outcome;
    
     
-//주사위2개
-var dice1 = new Dice(0,0,100,100,6);
-var dice2= new Dice(200,0,100,100,6);
+//주사위2개   
+var diceParameter={
+    "diceX":0,
+    "diceY":0,
+    "diceWidth":100,
+    "diceHeiht":100,
+    "dotrad":6,
+    "ctx":""
+};
+diceParameter.diceX=200;    
+var dice1 = new Dice(diceParameter);
+dice1.giveIDToCanvas("dice1");
+    
+diceParameter.diceX=400; 
+var dice2= new Dice(diceParameter);
+dice2.giveIDToCanvas("dice2");
     
 //점수
 var point=0;
 var gameCount=1;
 var firstWin=[7,11];
 var firstLose=[2,3,12];
+
+
     
 //게임시작
 function diceGameStart(){
@@ -59,12 +78,15 @@ function diceGameStart(){
             showResult("try again", point, false);
             gameCount +=1;
         }
+
    }else{
        restartGame();
    }
+
   return false;
 }    
     
+
 function restartGame(){
     var rePoint=sumDicePoint();
     if(rePoint==7){
@@ -80,11 +102,13 @@ function restartGame(){
     return false;
 }
     
+
     
 function showResult(result, resultPoint, finished){
     stageInput.value=gameCount;
     outcomeInput.value=result;
     pointInput.value=resultPoint;
+
     //결과 누적 보여주기
     var p=document.createElement('p');
     var text="satge: "+gameCount+"|   point: " +resultPoint+ (finished? "// End - result: "+result : " " );
@@ -104,7 +128,10 @@ function showResult(result, resultPoint, finished){
 function sumDicePoint(){
     return dice1.startGame()+dice2.startGame();
 }
+
+
     
+
     
     
 </script>

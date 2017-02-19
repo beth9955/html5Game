@@ -8,7 +8,15 @@ function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad){
   this.dots=[];
  
 }    
-    
+   
+Dice.prototype.setDiceX=function(diceX){
+    this.diceX=diceX;
+}
+
+Dice.prototype.setDiceY=function(diceY){
+    this.diceY=diceY;
+}
+
 Dice.prototype.startGame=function(){
     this.changeDiceNumber();
     this.drawDice();
@@ -20,7 +28,7 @@ Dice.prototype.changeDiceNumber=function(){
     this.ch=1+Math.floor(Math.random()*6);
 }
 
-Dice.prototype.drawDice=function(){    
+Dice.prototype.drawDice=function(){   
     ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
     ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
 }
@@ -117,4 +125,4 @@ Dice.prototype.middleDiceX=function(){
     
 Dice.prototype.middleDiceY=function(){
     return 0.5*this.diceHeight;
-}  }  
+}  

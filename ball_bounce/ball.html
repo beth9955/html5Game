@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+</head>
+<body onLoad="init();">
+    <canvas id="canvas" width="1200" class="" height="900">
+    </canvas>
+   <script src="./dice.js"> </script>   
+    <script>
+"use strict";
+//ball
+let ballx=50;
+let bally=50;
+let ballrad=10;
+
+//ball 수평, 수직 속도
+let ballvx=20;
+let ballvy=30;
+
+//box
+let boxx=20;
+let boxy=20;
+let boxWidth=800;
+let boxHeight=800;
+let rightBoundX=boxx+boxWidth-ballrad; //오른쪽
+let bottomBoundY=boxy+boxHeight-ballrad; //아래
+let leftBoundX=boxx+ballrad;//왼쪽
+let topBoundY=boxy+ballrad;
+
+//canvas
+let ctx;
+
+//변수들
+let moveBallInterval;
+let dice1;
+        
+function init(){
+   ctx=document.getElementById("canvas").getContext("2d");
+   ctx.fillStyle="#009966";
+   ctx.lineWidth=ballrad*2;
+   ctx.beginPath();
+   ctx.clearRect(boxx, boxy, boxWidth, boxHeight);
+   ctx.strokeRect(boxx, boxy, boxWidth, boxHeight);
+    
+   //공그리기
+   ctx.beginPath();
+   ctx.arc(ballx,bally,ballrad, Math.PI*2, false); 
+   ctx.closePath();
+   ctx.fill();
+    
+    moveBallInterval = setInterval(moveBall, 1000);
+}
+        
+
+function moveBall(){
+    ballx +=ballvx;
+    bally +=ballvy;
+    moveCheck();
+   
+   ctx.beginPath();
+   ctx.arc(ballx,bally,ballrad, Math.PI*2, false); 
+   ctx.closePath();
+   ctx.fill();
+}
+        
+function moveCheck(){
+    if(ballx+ballrad>rightBoundX){
+       ballvx=-ballvx;
+       ballx=rightBoundX-ballrad;
+    }
+    
+     if(ballx-ballrad<leftBoundX){
+       ballvx=-ballvx;
+       ballx=leftBoundX+ballrad;
+    }
+    
+     if(bally+ballrad>bottomBoundY){
+       ballvy=-ballvy;
+       bally=bottomBoundY-ballrad;
+    }
+    
+    if(bally-ballrad<topBoundY){
+       ballvy=-ballvy;
+       bally=topBoundY+ballrad;
+    }
+}
+
+    </script>
+</body>
+</html>
