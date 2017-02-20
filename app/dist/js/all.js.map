@@ -1,0 +1,1 @@
+{"version":3,"sources":["class.js"],"names":["Text","name","member"],"mappings":";;;;;;IAAMA;;;;;;;kCACQC,MAAK;AACX,iBAAKC,MAAL,GAAYD,IAAZ;AACH","file":"all.js","sourcesContent":["class Text{\r\n    setMember(name){\r\n        this.member=name;\r\n    }\r\n}\r\n\r\n"]}
