@@ -113,8 +113,8 @@ Dice.prototype.moveYDistance=function(){
 
 Dice.prototype.middleDiceX=function(){
     return 0.5*this.diceWidth;
-}  
+}
     
 Dice.prototype.middleDiceY=function(){
     return 0.5*this.diceHeight;
-}  }  
+}
