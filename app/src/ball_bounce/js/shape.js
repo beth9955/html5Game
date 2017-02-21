@@ -1,90 +1,71 @@
 "use strict";
 
-class Shape(){
-    let x;
-    let y;
-    let widht;
-    let height;
-    let shapeRad;
+class Shape{
 
-    let vX;
-    let vY;
-    
-    let ctx;
-    let box;
-    
-    constructor(shape){
-        this.x=shape.x;
-        this.y=shappe.y;
-        this.widht=shape.widht;
-        this.height=shape.height;
-        this.shapeRad=shape.shapeRad;
-        this.vX=shape.vX;
-        this.vY=shape.vY;
-    }
-    
-    
-    moveBall(shpapeVX, shpapeVY){
-         this.ballx +=shpapeVX;
-         this.bally +=shpapeVY;
-         moveCheck();
-         drawSape();
+    constructor(shapeConfig){
+         this.x=shapeConfig.x;
+         this.y=shapeConfig.y;
+         this.widht=shapeConfig.widht;
+         this.height=shapeConfig.height;
+         this.shapeRad=shapeConfig.shapeRad;
+         this.vX=shapeConfig.vX;
+         this.vY=shapeConfig.vY;
+     }
+
+
+     moveShape(){
+        this.calculateBound();
+        this.keepMoveInterval();
+     }
+
+    calculateBound(){
+        this.rightBoundX=this.box.getBoxX()+this.box.getBoxWidth()-this.shapeRad; //오른쪽
+        this.bottomBoundY=this.box.getBoxY()+this.box.getBoxHeight()-this.shapeRad; //아래
+        this.leftBoundX=this.box.getBoxX()+this.shapeRad;//왼쪽
+        this.topBoundY=this.box.getBoxY()+this.shapeRad;
     }
 
-    
+     keepMoveInterval(){
+         setInterval(()=>{
+             this.x +=this.vX;
+             this.y +=this.vY;
+             this.moveCheck();
+             this.drawShape();
+         }, 1000);
+     }
+
+
+    drawShape(){}
+
     moveCheck(){
-        if(box.boxWidth-(box.boxx+box.lineWidth/2)>box.rightBoundX){
-            shpapeVX=-shpapeVX;
-            box.ballx=box.boxx+box.ballrad;
+        //계산과정 넣기
     }
-    
-//     if(ballx-ballrad<leftBoundX){
-//       ballvx=-ballvx;
-//       ballx=leftBoundX+ballrad;
-//    }
-//    
-//     if(bally+ballrad>bottomBoundY){
-//       ballvy=-ballvy;
-//       bally=bottomBoundY-ballrad;
-//    }
-//    
-//    if(bally-ballrad<topBoundY){
-//       ballvy=-ballvy;
-//       bally=topBoundY+ballrad;
-//    }
-        
-    }
-    
-    drawShpae(){
-        console.log("parent");
-    }
-    
-    setCtx(ctx){
-        this.ctx=ctx;
-    }
-    
     setBox(box){
-        //박스객체 넘기기
         this.box=box;
     }
- 
 }
 
 class Circle extends Shape{
-    drawSape(){
-        super();
-        ctx.beginPath();
-        ctx.arc(ballx,bally,ballrad, Math.PI*2, false); 
-        ctx.closePath();
-        ctx.fill();
+    setBox(box){
+        super.setBox();
+        this.box=box;
+        this.ctx=box.getCtx();
+    }
+
+    drawShape(){
+         super.drawShape();
+         this.ctx.beginPath();
+         this.ctx.arc(this.x,this.y,this.shapeRad, Math.PI*2, false);
+         this.ctx.closePath();
+         this.ctx.fill();
     }
 }
 
 class Rect extends Shape{
-    drawSape(ctx){
-        super();
+    drawShape(ctx){
+        super.drawShape();
         ctx.beginPath();
-        ctx.arc(ballx,bally,ballrad, Math.PI*2, false); 
+      //  ctx.arc(this.x,bally,ballrad, Math.PI*2, false);
         ctx.closePath();
         ctx.fill();
     }

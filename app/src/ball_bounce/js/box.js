@@ -1,48 +1,61 @@
 "use stict";
 
-class BoundBox(){
-    //box
-    let boxx=20;
-    let boxy=20;
-    let boxWidth=300;
-    let boxHeight=300;
+class BoundBox{
+    
+    constructor(canvas){
+        this.boxx=20;
+        this.boxy=20;
+        this.boxWidht=300;
+        this.boxHeight=300;
+        this.canvas=canvas;
+        this.ctx=canvas.getContext('2d');
+        this.ctx.lineWidth=5;
+        this.ctx.fillStyle='#efefef';
+    }
 
-    let rightBoundX;
-    let bottomBoundY;
-    let leftBoundX;
-    let topBoundY;
-    let ctx;
-    let lineHeight;
-    
-    let shapeRad;
-    
-    constrctor(ctx,lineHeight ){
-       this.ctx=ctx; 
-       this.lineHeight=lineHeight;
-    }
-    
     drawBox(){
-        ctx.clearRect(boxx, boxy, boxWidth, boxHeight);
-        ctx.strokeRect(boxx, boxy, boxWidth, boxHeight);
+        this.ctx.strokeRect(this.boxx, this.boxy,  this.boxWidht, this.boxHeight);
     }
-    
-    setShapeRad(shapeRad){
-        this.shapeRad=shapeRad;
+
+    getBox(){
+        return this;
     }
-    
-    getRightBoundX(){
-        return boxx+boxWidth-lineWidth/2-shapeRad;
+
+    getCtx(){
+        return this.ctx;
     }
-    
-    getLeftBoundX(){
-        return boxx+lineWidth/2+shapeRad;//왼쪽;
+    getBoxX(){
+        return this.boxx;
     }
-    
-    getTopBoundY(){
-        return boxy+lineWidth/2+shapeRad; //위쪽
+
+    getBoxY(){
+        return this.boxy;
     }
-    
-    getBottomBound(){
-        return boxy+boxHeight-lineWidth/2-shapeRad; //아래;
+    getBoxWidth(){
+        return this.boxWidht;
     }
+    getBoxHeight(){
+        return this.boxHeight;
+    }
+
+
+    // setShapeRad(shapeRad){
+    //     this.shapeRad=shapeRad;
+    // }
+    //
+    // getRightBoundX(){
+    //     return boxx+boxWidth-lineWidth/2-shapeRad;
+    // }
+    //
+    // getLeftBoundX(){
+    //     return boxx+lineWidth/2+shapeRad;//왼쪽;
+    // }
+    //
+    // getTopBoundY(){
+    //     return boxy+lineWidth/2+shapeRad; //위쪽
+    // }
+    //
+    // getBottomBound(){
+    //     return boxy+boxHeight-lineWidth/2-shapeRad; //아래;
+    // }
 }
