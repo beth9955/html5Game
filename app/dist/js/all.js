@@ -9,14 +9,15 @@ var BoundBox = function () {
     function BoundBox(canvas) {
         _classCallCheck(this, BoundBox);
 
-        this.boxx = 20;
-        this.boxy = 20;
-        this.boxWidht = 300;
-        this.boxHeight = 300;
+        this.boxx = 50;
+        this.boxy = 50;
+        this.boxWidht = 100;
+        this.boxHeight = 100;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.ctx.lineWidth = 5;
-        this.ctx.fillStyle = '#efefef';
+        this.ctx.strokeStyle = '#000';
+        this.ctx.fillStyle = '#000';
     }
 
     _createClass(BoundBox, [{
@@ -248,16 +249,17 @@ var Shape = function () {
     }, {
         key: "calculateBound",
         value: function calculateBound() {
-            this.rightBoundX = this.box.getBoxX() + this.box.getBoxWidth() - this.shapeRad; //오른쪽
-            this.bottomBoundY = this.box.getBoxY() + this.box.getBoxHeight() - this.shapeRad; //아래
-            this.leftBoundX = this.box.getBoxX() + this.shapeRad; //왼쪽
-            this.topBoundY = this.box.getBoxY() + this.shapeRad;
+            this.rightBoundX = this.box.getBoxX() + this.box.getBoxWidth() - this.ctx.lineWidth - this.shapeRad * 2; //오른쪽
+            this.bottomBoundY = this.box.getBoxY() + this.box.getBoxHeight() - this.ctx.lineWidth - this.shapeRad * 2; //아래
+            this.leftBoundX = this.box.getBoxX() + this.ctx.lineWidth + this.shapeRad * 2; //왼쪽
+            this.topBoundY = this.box.getBoxY() + this.ctx.lineWidth + this.shapeRad * 2;
         }
     }, {
         key: "keepMoveInterval",
         value: function keepMoveInterval() {
             var _this = this;
 
+            console.log('xx');
             setInterval(function () {
                 _this.x += _this.vX;
                 _this.y += _this.vY;
@@ -266,13 +268,22 @@ var Shape = function () {
             }, 1000);
         }
     }, {
-        key: "drawShape",
-        value: function drawShape() {}
-    }, {
         key: "moveCheck",
         value: function moveCheck() {
-            //계산과정 넣기
+            //오른쪽
+            if (this.x >= this.rightBoundX) {
+                this.vX = -this.vX;
+            }
+            //왼쪽
+            // if(this.getLeftBound()){
+
+            //}
+            //아래쪽
+            //위쪽
         }
+    }, {
+        key: "drawShape",
+        value: function drawShape() {}
     }, {
         key: "setBox",
         value: function setBox(box) {
@@ -297,16 +308,19 @@ var Circle = function (_Shape) {
         value: function setBox(box) {
             _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "setBox", this).call(this);
             this.box = box;
-            this.ctx = box.getCtx();
         }
     }, {
         key: "drawShape",
         value: function drawShape() {
             _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "drawShape", this).call(this);
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.shapeRad, Math.PI * 2, false);
-            this.ctx.closePath();
-            this.ctx.fill();
+            //원일때만 좌표 옮기기
+            this.box.ctx.translate(+this.shapeRad, +this.shapeRad);
+            this.box.ctx.beginPath();
+            this.box.ctx.arc(this.x, this.y, this.shapeRad, Math.PI * 2, false);
+            this.box.ctx.closePath();
+            this.box.ctx.fill();
+            this.box.ctx.stroke();
+            this.box.ctx.translate(-this.shapeRad, -this.shapeRad);
         }
     }]);
 
@@ -326,9 +340,10 @@ var Rect = function (_Shape2) {
         key: "drawShape",
         value: function drawShape(ctx) {
             _get(Rect.prototype.__proto__ || Object.getPrototypeOf(Rect.prototype), "drawShape", this).call(this);
+            //좌표 안 옮기고 네모 그리기
             ctx.beginPath();
-            //  ctx.arc(this.x,bally,ballrad, Math.PI*2, false);
-            ctx.closePath();
+            //ctx.arc(this.x,bally,this.shapeRad, Math.PI*2, false);
+            //ctx.closePath();
             ctx.fill();
         }
     }]);

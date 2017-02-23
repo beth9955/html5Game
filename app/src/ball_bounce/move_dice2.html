@@ -6,7 +6,7 @@
 
 </head>
 <body>
-<canvas id="canvas" width="1200" class="" height="900">
+<canvas id="canvas" width="500" class="" height="500">
 </canvas>
 <script src="../../dist/js/all.js"> </script>
 <script>
@@ -15,21 +15,23 @@
 
     //박스 그리기
     let box=new BoundBox(canvas);
+   console.log(box);
     box.drawBox();
 
    //원속성
     let shapeConfig={
         x:50,
         y:50,
-        width:60,
-        height:60,
-        shapeRad:20,
+        width:30,
+        height:30,
+        shapeRad:10,
         vX:3,
         vY:3
     };
     //원그리기
     let circle=new Circle(shapeConfig);
     circle.setBox(box.getBox());
+    console.log("dd");
     circle.moveShape();
 
 

@@ -3,14 +3,15 @@
 class BoundBox{
     
     constructor(canvas){
-        this.boxx=20;
-        this.boxy=20;
-        this.boxWidht=300;
-        this.boxHeight=300;
+        this.boxx=50;
+        this.boxy=50;
+        this.boxWidht=100;
+        this.boxHeight=100;
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
         this.ctx.lineWidth=5;
-        this.ctx.fillStyle='#efefef';
+        this.ctx.strokeStyle='#000';
+        this.ctx.fillStyle='#000';
     }
 
     drawBox(){
