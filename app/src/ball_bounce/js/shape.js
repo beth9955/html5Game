@@ -2,30 +2,29 @@
 
 class Shape{
 
-    constructor(shapeConfig){
+    constructor(shapeConfig, box){
         this.x=shapeConfig.x;
         this.y=shapeConfig.y;
-        this.widht=shapeConfig.widht;
-        this.height=shapeConfig.height;
         this.shapeRad=shapeConfig.shapeRad;
         this.vX=shapeConfig.vX;
         this.vY=shapeConfig.vY;
+        this.box=box;
      }
 
      moveShape(){
         this.calculateBound();
         this.keepMoveInterval();
+       
      }
 
     calculateBound(){
-        this.rightBoundX=this.box.getBoxX()+this.box.getBoxWidth()-this.ctx.lineWidth-(this.shapeRad*2); //오른쪽
-        this.bottomBoundY=this.box.getBoxY()+this.box.getBoxHeight()-this.ctx.lineWidth-(this.shapeRad*2); //아래
-        this.leftBoundX=this.box.getBoxX()+this.ctx.lineWidth+(this.shapeRad*2);//왼쪽
-        this.topBoundY=this.box.getBoxY()+this.ctx.lineWidth+(this.shapeRad*2);
+        this.rightBoundX=this.box.boxx+this.box.boxWidht-this.box.ctx.lineWidth-(this.shapeRad*2); //오른쪽
+        this.bottomBoundY=this.box.boxy+this.box.boxHeight-this.box.ctx.lineWidth-(this.shapeRad*2); //아래
+        this.leftBoundX=this.box.boxx+this.box.ctx.lineWidth;//왼쪽
+        this.topBoundY=this.box.boxy+this.box.ctx.lineWidth;
     }
 
      keepMoveInterval(){
-        console.log('xx');
          setInterval(()=>{
              this.x +=this.vX;
              this.y +=this.vY;
@@ -39,28 +38,30 @@ class Shape{
         //오른쪽
          if(this.x>=this.rightBoundX){
             this.vX=-this.vX;
+            this.x=this.rightBoundX;
         }
         //왼쪽
-       // if(this.getLeftBound()){
-
-        //}
+        if(this.leftBoundX>this.x){
+            this.vX=-this.vX;
+            this.x=this.leftBoundX;
+        }
         //아래쪽
-        //위쪽
+         if(this.y>=this.bottomBoundY){
+            this.vY=-this.vY;
+            this.y=this.bottomBoundY;
+        }
+        
+         //위쪽
+         if(this.topBoundY>this.y){
+            this.vY=-this.vY;
+            this.y=this.topBoundY;
+        }
+       
     }
 
-    drawShape(){}
-
-    setBox(box){
-        this.box=box;
-    }
 }
 
 class Circle extends Shape{
-    setBox(box){
-        super.setBox();
-        this.box=box;
-    }
-
     drawShape(){
         super.drawShape();
          //원일때만 좌표 옮기기
@@ -73,15 +74,4 @@ class Circle extends Shape{
         this.box.ctx.translate(-this.shapeRad, -this.shapeRad);
     }
 
-}
-
-class Rect extends Shape{
-    drawShape(ctx){
-        super.drawShape();
-        //좌표 안 옮기고 네모 그리기
-        ctx.beginPath();
-        //ctx.arc(this.x,bally,this.shapeRad, Math.PI*2, false);
-        //ctx.closePath();
-        ctx.fill();
-    }
 }

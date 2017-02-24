@@ -1,20 +1,35 @@
-function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad){
-  this.diceX=diceX;
-  this.diceY=diceY;
-  this.diceWidth=diceWidth;
-  this.diceHeight=diceHeiht;
-  this.dotrad=dotrad;
+
+"use strict";
+//기존 소스 재활용하기(craps-game / dice.js)
+
+function Dice(diceParameter, box){
+  Shape.call(this, diceParameter);    
+  
+  //width, height재정의
+  this.widht=this.shapeRad*2;
+  this.height=this.shapeRad*2;
+  this.box=box;
+  this.dotrad=diceParameter.dotrad || 6;
   this.ch=1;
   this.dots=[];
- 
+
 }    
-   
+    
+//Shape속성 prototype link걸기
+Dice.prototype=Object.create(Shape.prototype);
+Dice.prototype.construct=Dice;
+
+//공통 호출메소드인 drawShape만 새로 정의
+Dice.prototype.drawShape=function(){
+    this.startGame();
+}
+    
 Dice.prototype.setDiceX=function(diceX){
-    this.diceX=diceX;
+    this.x=diceX;
 }
 
 Dice.prototype.setDiceY=function(diceY){
-    this.diceY=diceY;
+    this.y=diceY;
 }
 
 Dice.prototype.startGame=function(){
@@ -29,8 +44,8 @@ Dice.prototype.changeDiceNumber=function(){
 }
 
 Dice.prototype.drawDice=function(){   
-    ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
-    ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+     this.box.ctx.clearRect(this.box.boxx+this.box.ctx.lineWidth/2, this.box.boxy+this.box.ctx.lineWidth/2, this.box.boxWidht-this.box.ctx.lineWidth, this.box.boxWidht-this.box.ctx.lineWidth);
+     this.box.ctx.strokeRect(this.x, this.y, this.widht, this.height);   
 }
 
 Dice.prototype.makeDot=function(){
@@ -85,30 +100,32 @@ Dice.prototype.draw1Mid=function(){
     y=this.moveYDistance();
     this.dots.push([x,y]);
     x=this.middleDiceX();
-    y=this.diceHeight-this.moveYDistance();
+    y=this.height-this.moveYDistance();
      this.dots.push([x,y]);
 }
     
 
 Dice.prototype.creatDot=function(){
+   
     var _this = this; 
-    this.dots.forEach(function(item, index, dots){
-        ctx.beginPath();
-        ctx.arc(item[0]+_this.diceX, item[1]+_this.diceY, _this.dotrad, 0, Math.PI*2, false);
-        ctx.closePath();
-        ctx.fill();
+    this.dots.forEach((item, index, dots)=>{
+        this.box.ctx.beginPath();
+        this.box.ctx.arc(item[0]+_this.x, item[1]+_this.y, _this.dotrad, 0, Math.PI*2, false);
+        this.box.ctx.closePath();
+        this.box.ctx.fill();
     });
+  
     //초기화
   this.dots=[];
 }
 
 Dice.prototype.dotRadFromDiceX=function(isOrigin){
-    return isOrigin? this.moveXDistance():this.diceWidth-this.moveXDistance();
+    return isOrigin? this.moveXDistance():this.widht-this.moveXDistance();
 }
     
 
 Dice.prototype.dotRadFromDiceY=function(isOrigin){
-    return isOrigin? this.moveYDistance():this.diceHeight-this.moveYDistance();
+    return isOrigin? this.moveYDistance():this.height-this.moveYDistance();
 }
     
 Dice.prototype.moveXDistance=function(){
@@ -120,9 +137,9 @@ Dice.prototype.moveYDistance=function(){
 }  
 
 Dice.prototype.middleDiceX=function(){
-    return 0.5*this.diceWidth;
+    return 0.5*this.widht;
 }  
     
 Dice.prototype.middleDiceY=function(){
-    return 0.5*this.diceHeight;
+    return 0.5*this.height;
 }  

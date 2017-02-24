@@ -30,13 +30,13 @@ gulp.task('watch', function () {
 
 gulp.task('babel', function() {
     return gulp.src(paths.js)
-        .pipe(sourcemaps.init())
+       // .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(concat('all.js'))
+        //.pipe(concat('all.js'))
         //.pipe(gulp.dest(dist+'/js'))
-        .pipe(sourcemaps.write('.'))
+        //.pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dist+'/js'))
 });
 gulp.task('default', ['babel','watch']);

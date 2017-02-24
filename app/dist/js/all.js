@@ -82,15 +82,25 @@ var BoundBox = function () {
 }();
 "use strict";
 
-function Dice(diceX, diceY, diceWidth, diceHeiht, dotrad) {
-    this.diceX = diceX;
-    this.diceY = diceY;
-    this.diceWidth = diceWidth;
-    this.diceHeight = diceHeiht;
-    this.dotrad = dotrad;
+function Dice(diceParameter, box) {
+
+    Shape.call(this, diceParameter);
+    this.diceX = diceParameter.x;
+    this.diceY = diceParameter.y;
+    this.diceWidth = diceParameter.shapeRad * 2 || 100;
+    this.diceHeight = diceParameter.shapeRad * 2 || 100;
+
+    this.box = box;
+    this.dotrad = diceParameter.dotrad || 6;
     this.ch = 1;
     this.dots = [];
+    this.canvas;
+    this.ctx;
+    // this.makeCanvas(diceParameter.diceX, diceParameter.diceY);
 }
+
+Dice.prototype = Object.create(Shape.prototype);
+Dice.prototype.construct = Dice;
 
 Dice.prototype.setDiceX = function (diceX) {
     this.diceX = diceX;
@@ -112,8 +122,8 @@ Dice.prototype.changeDiceNumber = function () {
 };
 
 Dice.prototype.drawDice = function () {
-    ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
-    ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+    this.box.ctx.clearRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
+    this.box.ctx.strokeRect(this.diceX, this.diceY, this.diceWidth, this.diceHeight);
 };
 
 Dice.prototype.makeDot = function () {
@@ -181,12 +191,14 @@ Dice.prototype.draw1Mid = function () {
 };
 
 Dice.prototype.creatDot = function () {
+    var _this2 = this;
+
     var _this = this;
     this.dots.forEach(function (item, index, dots) {
-        ctx.beginPath();
-        ctx.arc(item[0] + _this.diceX, item[1] + _this.diceY, _this.dotrad, 0, Math.PI * 2, false);
-        ctx.closePath();
-        ctx.fill();
+        _this2.box.ctx.beginPath();
+        _this2.box.ctx.arc(item[0] + _this.diceX, item[1] + _this.diceY, _this.dotrad, 0, Math.PI * 2, false);
+        _this2.box.ctx.closePath();
+        _this2.box.ctx.fill();
     });
     //초기화
     this.dots = [];
@@ -228,7 +240,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Shape = function () {
-    function Shape(shapeConfig) {
+    function Shape(shapeConfig, box) {
         _classCallCheck(this, Shape);
 
         this.x = shapeConfig.x;
@@ -238,6 +250,7 @@ var Shape = function () {
         this.shapeRad = shapeConfig.shapeRad;
         this.vX = shapeConfig.vX;
         this.vY = shapeConfig.vY;
+        this.box = box;
     }
 
     _createClass(Shape, [{
@@ -249,10 +262,10 @@ var Shape = function () {
     }, {
         key: "calculateBound",
         value: function calculateBound() {
-            this.rightBoundX = this.box.getBoxX() + this.box.getBoxWidth() - this.ctx.lineWidth - this.shapeRad * 2; //오른쪽
-            this.bottomBoundY = this.box.getBoxY() + this.box.getBoxHeight() - this.ctx.lineWidth - this.shapeRad * 2; //아래
-            this.leftBoundX = this.box.getBoxX() + this.ctx.lineWidth + this.shapeRad * 2; //왼쪽
-            this.topBoundY = this.box.getBoxY() + this.ctx.lineWidth + this.shapeRad * 2;
+            this.rightBoundX = this.box.getBoxX() + this.box.getBoxWidth() - this.box.ctx.lineWidth - this.shapeRad * 2; //오른쪽
+            this.bottomBoundY = this.box.getBoxY() + this.box.getBoxHeight() - this.box.ctx.lineWidth - this.shapeRad * 2; //아래
+            this.leftBoundX = this.box.getBoxX() + this.box.ctx.lineWidth + this.shapeRad * 2; //왼쪽
+            this.topBoundY = this.box.getBoxY() + this.box.ctx.lineWidth + this.shapeRad * 2;
         }
     }, {
         key: "keepMoveInterval",
@@ -304,13 +317,13 @@ var Circle = function (_Shape) {
     }
 
     _createClass(Circle, [{
-        key: "setBox",
-        value: function setBox(box) {
-            _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "setBox", this).call(this);
-            this.box = box;
-        }
-    }, {
         key: "drawShape",
+
+        // setBox(box){
+        //    super.setBox();
+        //    this.box=box;
+        // }
+
         value: function drawShape() {
             _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "drawShape", this).call(this);
             //원일때만 좌표 옮기기

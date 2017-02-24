@@ -2,11 +2,11 @@
 
 class BoundBox{
     
-    constructor(canvas){
-        this.boxx=50;
-        this.boxy=50;
-        this.boxWidht=100;
-        this.boxHeight=100;
+    constructor(boxConfig, canvas){
+        this.boxx=boxConfig.boxx;
+        this.boxy=boxConfig.boxy;
+        this.boxWidht=boxConfig.boxWidht;
+        this.boxHeight=boxConfig.boxHeight;
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
         this.ctx.lineWidth=5;
@@ -17,46 +17,5 @@ class BoundBox{
     drawBox(){
         this.ctx.strokeRect(this.boxx, this.boxy,  this.boxWidht, this.boxHeight);
     }
-
-    getBox(){
-        return this;
-    }
-
-    getCtx(){
-        return this.ctx;
-    }
-    getBoxX(){
-        return this.boxx;
-    }
-
-    getBoxY(){
-        return this.boxy;
-    }
-    getBoxWidth(){
-        return this.boxWidht;
-    }
-    getBoxHeight(){
-        return this.boxHeight;
-    }
-
-
-    // setShapeRad(shapeRad){
-    //     this.shapeRad=shapeRad;
-    // }
-    //
-    // getRightBoundX(){
-    //     return boxx+boxWidth-lineWidth/2-shapeRad;
-    // }
-    //
-    // getLeftBoundX(){
-    //     return boxx+lineWidth/2+shapeRad;//왼쪽;
-    // }
-    //
-    // getTopBoundY(){
-    //     return boxy+lineWidth/2+shapeRad; //위쪽
-    // }
-    //
-    // getBottomBound(){
-    //     return boxy+boxHeight-lineWidth/2-shapeRad; //아래;
-    // }
+ 
 }
