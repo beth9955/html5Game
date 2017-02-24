@@ -73,10 +73,14 @@ var Shape = function () {
             }
         }
     }, {
-        key: "setV",
-        value: function setV(v) {
-            this.vX = v;
-            this.vY = v;
+        key: "setVX",
+        value: function setVX(v) {
+            this.vX = +v;
+        }
+    }, {
+        key: "setVY",
+        value: function setVY(v) {
+            this.vY = +v;
         }
     }]);
 

@@ -12,9 +12,11 @@
 <body>
 <div class="container">
     <div id="range">
-        slide me!!
-        <input  type="range" min="10" max="100" step="10"  oninput="changeV(this.value)" onchange="changeV(this.value)"/>
-        속도: <span id="vResult">50</span>
+        slide me!!<br/><br/>
+        X 속도:  <input  type="range" min="0" max="50" step="10"  oninput="changeVX(this.value)" onchange="changeVX(this.value)"/>
+       <span id="vXResult"></span><br/>
+        Y 속도: <input  type="range" min="0" max="50" step="10"  oninput="changeVY(this.value)" onchange="changeVY(this.value)"/>
+         <span id="vYResult"></span>
     </div>
         <canvas id="canvas" width="1000" class="" height="1000">
 </canvas>
@@ -34,6 +36,7 @@
         boxHeight:200
     };
     let box1=new BoundBox(boxConfig, canvas);
+    //박스 옵션 변경
     boxConfig.boxWidht=250;
     boxConfig.boxHeight=250;
     boxConfig.boxx +=300;
@@ -63,14 +66,17 @@
 
     //주사위 그리기
     let dice1= new Dice(shapeConfig, box1);
+    //도형옵션변경
     shapeConfig.shapeRad=40;
     shapeConfig.vY=-shapeConfig.vY;
+    shapeConfig.Y=50;
     let dice2= new Dice(shapeConfig, box2);
 
     //원그리기
-    shapeConfig.shapeRad=30;
+    shapeConfig.shapeRad=20;
    let circle=new Circle(shapeConfig, box3);
     shapeConfig.shapeRad=10;
+    shapeConfig.x=150;
     shapeConfig.vX=-shapeConfig.vX;
     let circle2=new Circle(shapeConfig, box4);
 
@@ -80,12 +86,21 @@
     dice2.moveShape();
 
     //range값 변할시
-    function changeV(v){
-        circle2.setV(v);
-        circle.setV(v);
-        dice1.setV(v);
-        dice2.setV(v);
-        document.getElementById("vResult").textContent=v;
+    function changeVX(v){
+        circle2.setVX(v);
+        circle.setVX(v);
+        dice1.setVX(v);
+        dice2.setVX(v);
+        document.getElementById("vXResult").textContent=v ;
+    }
+
+    //range값 변할시
+    function changeVY(v){
+        circle2.setVY(v);
+        circle.setVY(v);
+        dice1.setVY(v);
+        dice2.setVY(v);
+        document.getElementById("vYResult").textContent=v ;
     }
 </script>
 </body>

@@ -60,9 +60,12 @@ class Shape{
        
     }
 
-    setV(v){
-        this.vX=v;
-        this.vY=v;
+    setVX(v){
+        this.vX=+v;
+    }
+
+    setVY(v){
+        this.vY=+v;
     }
 
 }
