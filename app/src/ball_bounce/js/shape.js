@@ -26,6 +26,7 @@ class Shape{
 
      keepMoveInterval(){
          setInterval(()=>{
+             this.box.clearBox();
              this.x +=this.vX;
              this.y +=this.vY;
              this.moveCheck();
@@ -59,11 +60,16 @@ class Shape{
        
     }
 
+    setV(v){
+        this.vX=v;
+        this.vY=v;
+    }
+
 }
 
 class Circle extends Shape{
     drawShape(){
-        super.drawShape();
+       // super.drawShape();
          //원일때만 좌표 옮기기
         this.box.ctx.translate(+this.shapeRad, +this.shapeRad);
         this.box.ctx.beginPath();

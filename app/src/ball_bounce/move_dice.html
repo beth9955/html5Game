@@ -5,9 +5,20 @@
     <title>Document</title>
 
 </head>
+<style>
+    #container{position:relative;}
+    #range{position:fixed; top:100px; left:700px;}
+</style>
 <body>
-<canvas id="canvas" width="1000" class="" height="1000">
+<div class="container">
+    <div id="range">
+        slide me!!
+        <input  type="range" min="10" max="100" step="10"  oninput="changeV(this.value)" onchange="changeV(this.value)"/>
+        속도: <span id="vResult">50</span>
+    </div>
+        <canvas id="canvas" width="1000" class="" height="1000">
 </canvas>
+</div>
 <script src="../../dist/js/shape.js"> </script>
 <script src="../../dist/js/dice.js"> </script>
 <script src="../../dist/js/box.js"> </script>
@@ -23,14 +34,25 @@
         boxHeight:200
     };
     let box1=new BoundBox(boxConfig, canvas);
+    boxConfig.boxWidht=250;
+    boxConfig.boxHeight=250;
     boxConfig.boxx +=300;
-
-    
     let box2=new BoundBox(boxConfig, canvas);
+
+
+    boxConfig.boxy +=300;
+    let box3=new BoundBox(boxConfig, canvas);
+    boxConfig.boxWidht=150;
+    boxConfig.boxHeight=150;
+    boxConfig.boxx -=300;
+    let box4=new BoundBox(boxConfig, canvas);
+
     box1.drawBox();
     box2.drawBox();
-    
-   //도형속성
+    box3.drawBox();
+    box4.drawBox();
+
+    //도형속성
     let shapeConfig={
         x:100,
         y:100,
@@ -38,18 +60,33 @@
         vX:10,
         vY:10
     };
-    
-    //원그리기
-   // let circle=new Circle(shapeConfig, box);
-    //circle.moveShape();
 
     //주사위 그리기
     let dice1= new Dice(shapeConfig, box1);
-    
+    shapeConfig.shapeRad=40;
     shapeConfig.vY=-shapeConfig.vY;
     let dice2= new Dice(shapeConfig, box2);
+
+    //원그리기
+    shapeConfig.shapeRad=30;
+   let circle=new Circle(shapeConfig, box3);
+    shapeConfig.shapeRad=10;
+    shapeConfig.vX=-shapeConfig.vX;
+    let circle2=new Circle(shapeConfig, box4);
+
+    circle2.moveShape();
+    circle.moveShape();
     dice1.moveShape();
     dice2.moveShape();
+
+    //range값 변할시
+    function changeV(v){
+        circle2.setV(v);
+        circle.setV(v);
+        dice1.setV(v);
+        dice2.setV(v);
+        document.getElementById("vResult").textContent=v;
+    }
 </script>
 </body>
 </html>

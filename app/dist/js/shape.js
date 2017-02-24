@@ -1,7 +1,5 @@
 "use strict";
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -42,6 +40,7 @@ var Shape = function () {
             var _this = this;
 
             setInterval(function () {
+                _this.box.clearBox();
                 _this.x += _this.vX;
                 _this.y += _this.vY;
                 _this.moveCheck();
@@ -73,6 +72,12 @@ var Shape = function () {
                 this.y = this.topBoundY;
             }
         }
+    }, {
+        key: "setV",
+        value: function setV(v) {
+            this.vX = v;
+            this.vY = v;
+        }
     }]);
 
     return Shape;
@@ -90,7 +95,7 @@ var Circle = function (_Shape) {
     _createClass(Circle, [{
         key: "drawShape",
         value: function drawShape() {
-            _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "drawShape", this).call(this);
+            // super.drawShape();
             //원일때만 좌표 옮기기
             this.box.ctx.translate(+this.shapeRad, +this.shapeRad);
             this.box.ctx.beginPath();

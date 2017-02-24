@@ -44,7 +44,7 @@ Dice.prototype.changeDiceNumber=function(){
 }
 
 Dice.prototype.drawDice=function(){   
-     this.box.ctx.clearRect(this.box.boxx+this.box.ctx.lineWidth/2, this.box.boxy+this.box.ctx.lineWidth/2, this.box.boxWidht-this.box.ctx.lineWidth, this.box.boxWidht-this.box.ctx.lineWidth);
+     //this.box.ctx.clearRect(this.box.boxx+this.box.ctx.lineWidth/2, this.box.boxy+this.box.ctx.lineWidth/2, this.box.boxWidht-this.box.ctx.lineWidth, this.box.boxWidht-this.box.ctx.lineWidth);
      this.box.ctx.strokeRect(this.x, this.y, this.widht, this.height);   
 }
 

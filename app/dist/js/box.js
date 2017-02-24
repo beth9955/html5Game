@@ -25,6 +25,11 @@ var BoundBox = function () {
         value: function drawBox() {
             this.ctx.strokeRect(this.boxx, this.boxy, this.boxWidht, this.boxHeight);
         }
+    }, {
+        key: 'clearBox',
+        value: function clearBox() {
+            this.ctx.clearRect(this.boxx + this.ctx.lineWidth / 2, this.boxy + this.ctx.lineWidth / 2, this.boxWidht - this.ctx.lineWidth, this.boxWidht - this.ctx.lineWidth);
+        }
     }]);
 
     return BoundBox;
