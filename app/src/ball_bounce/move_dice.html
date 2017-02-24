@@ -6,17 +6,34 @@
 
 </head>
 <style>
+    select{width:100px;}
     #container{position:relative;}
     #range{position:fixed; top:100px; left:700px;}
 </style>
 <body>
 <div class="container">
     <div id="range">
-        slide me!!<br/><br/>
-        X 속도:  <input  type="range" min="0" max="50" step="10"  oninput="changeVX(this.value)" onchange="changeVX(this.value)"/>
-       <span id="vXResult"></span><br/>
-        Y 속도: <input  type="range" min="0" max="50" step="10"  oninput="changeVY(this.value)" onchange="changeVY(this.value)"/>
-         <span id="vYResult"></span>
+        CHANGE ME!!<br/><br/>
+        X 속도:
+        <select id="changeVX">
+              <option value="0">0</option>
+              <option value="10" selected="selected">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+        </select>
+        <!--<input  type="range" min="0" max="50" step="10"  oninput="changeVX(this.value)" onchange="changeVX(this.value)"/>-->
+        <br/><br/>
+        Y 속도:
+        <select id="changeVY">
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30" selected="selected">30</option>
+              <option value="40">40</option>
+        </select>
+        <!--<input  type="range" min="0" max="50" step="10"  oninput="changeVY(this.value)" onchange="changeVY(this.value)"/>-->
+
     </div>
         <canvas id="canvas" width="1000" class="" height="1000">
 </canvas>
@@ -61,7 +78,7 @@
         y:100,
         shapeRad:30, //반지름
         vX:10,
-        vY:10
+        vY:30
     };
 
     //주사위 그리기
@@ -91,7 +108,6 @@
         circle.setVX(v);
         dice1.setVX(v);
         dice2.setVX(v);
-        document.getElementById("vXResult").textContent=v ;
     }
 
     //range값 변할시
@@ -100,8 +116,19 @@
         circle.setVY(v);
         dice1.setVY(v);
         dice2.setVY(v);
-        document.getElementById("vYResult").textContent=v ;
     }
+
+
+    let vxSelector=document.getElementById("changeVX");
+    vxSelector.addEventListener("change", function() {
+        changeVX(vxSelector.value);
+    });
+
+    let vYSelector=document.getElementById("changeVY");
+    vYSelector.addEventListener("change", function() {
+        changeVY(vYSelector.value);
+    });
+
 </script>
 </body>
 </html>
