@@ -5,7 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 
-var src = 'app/src/ball_bounce';
+var src = 'app/src/slingshot';
 var dist = 'app/dist';
 
 var paths = {
