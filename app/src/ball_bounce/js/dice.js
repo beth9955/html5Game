@@ -3,8 +3,7 @@
 //기존 소스 재활용하기(craps-game / dice.js)
 
 function Dice(diceParameter, box){
-  Shape.call(this, diceParameter);    
-  
+  Shape.call(this, diceParameter);
   //width, height재정의
   this.widht=this.shapeRad*2;
   this.height=this.shapeRad*2;

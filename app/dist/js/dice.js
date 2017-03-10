@@ -4,7 +4,6 @@
 
 function Dice(diceParameter, box) {
     Shape.call(this, diceParameter);
-
     //width, height재정의
     this.widht = this.shapeRad * 2;
     this.height = this.shapeRad * 2;

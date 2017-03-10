@@ -2,12 +2,12 @@
 
 class Shape{
 
-    constructor(shapeConfig, box){
-        this.x=shapeConfig.x;
-        this.y=shapeConfig.y;
-        this.shapeRad=shapeConfig.shapeRad;
-        this.vX=shapeConfig.vX;
-        this.vY=shapeConfig.vY;
+    constructor({x:x, y:y, shapeRad:shapeRad, vX:vX, vY:vY}=shapeConfig, box){
+        this.x=x;
+        this.y=y;
+        this.shapeRad=shapeRad;
+        this.vX=vX;
+        this.vY=vY;
         this.box=box;
      }
 

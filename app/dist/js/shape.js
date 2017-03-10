@@ -9,14 +9,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Shape = function () {
-    function Shape(shapeConfig, box) {
+    function Shape() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : shapeConfig,
+            x = _ref.x,
+            y = _ref.y,
+            shapeRad = _ref.shapeRad,
+            vX = _ref.vX,
+            vY = _ref.vY;
+
+        var box = arguments[1];
+
         _classCallCheck(this, Shape);
 
-        this.x = shapeConfig.x;
-        this.y = shapeConfig.y;
-        this.shapeRad = shapeConfig.shapeRad;
-        this.vX = shapeConfig.vX;
-        this.vY = shapeConfig.vY;
+        this.x = x;
+        this.y = y;
+        this.shapeRad = shapeRad;
+        this.vX = vX;
+        this.vY = vY;
         this.box = box;
     }
 
