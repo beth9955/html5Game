@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>슬링샷</title>
 </head>
 <style>
@@ -18,18 +18,12 @@
 <canvas id="canvas" width="1000" height="500">
 </canvas>
 <br/>
-<!--<form action="" id="f" onSubmit="return fire();">
-    속도, 각도를 지정하고 대포를 발사<br/>
-    대포에서 발사되는 <속도input id="vo" name="vo" value="10" type="number" min="100" max="100"></속도input><br/>
-    각도<각도input id="ang" name="ang" value="0" type="number" min="0" max="80"></각도input><br/>
-    <input type="submit" value="발사" />
-</form>
--->
 <script src="../../dist/js/sling.js"> </script>
 <script src="../../dist/js/makeGame.js"> </script>
 <script>
     "use strict";
    window.onload=function(){
+
         let movePossible=false;
         let canvas=document.getElementById("canvas");
         let ctx=canvas.getContext("2d");
@@ -37,13 +31,10 @@
         let verticalvelBefore=0;
         let verticalvelAfter=0;
         let moveBallInterval;
-        //시작 위치
         let startX=100;
         let startY=240;
 
-//       ctx.canvas.width  = window.innerWidth-10;
-//       ctx.canvas.height = 500;
-//       //게임 오브젝트 생성 및 그리기
+       //게임 오브젝트 생성 및 그리기
        var gameComponent=makeGameComponet(startX,startY, ctx );
        gameComponent.drawAll();
 
@@ -70,7 +61,7 @@
            }
        }
 
-       //어렵;;
+       //공포물선 참고함: 어렵;;
        function finish(e){
            if(movePossible){
                let outofcannon=gameComponent.getOut0fCannon();
@@ -87,7 +78,6 @@
            verticalvelAfter=verticalvelBefore+2;
            let dy=(verticalvelBefore+verticalvelAfter)*0.5;
            verticalvelBefore=verticalvelAfter;
-
            gameComponent.moveBall(dx, dy, moveBallInterval, canvas);
            gameComponent.resetPosition(startX, startY, componet.SLING);
        }
@@ -95,6 +85,7 @@
        function getClientX(e){
            return e.clientX-canvas.offsetLeft;
        }
+
        function getClientY(e){
            return e.clientY-canvas.offsetTop;
        }

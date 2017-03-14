@@ -79,7 +79,7 @@ function makeGameComponet(startX, startY, ctx){
 
 
     function moveBall(x, y, moveBallInterval, canvas){
-        //현재 캔버스 지우기
+
        let ball=objectMap.get(componet.BALL);
         ball.moveball(x, y);
 
@@ -87,7 +87,6 @@ function makeGameComponet(startX, startY, ctx){
         if(ball.getOffsetY(true)>=ground.y){
             endGame(moveBallInterval,"TRY AGAIN");
         }
-
 
         //캔버스 안에 있는지 확인하기
         if(ball.getOffsetY(false)<=canvas.offsetTop || ball.getOffsetX(true)>=canvas.offsetLeft+canvas.width){
@@ -98,6 +97,7 @@ function makeGameComponet(startX, startY, ctx){
         if((ball.getOffsetX(true)>=target.x && ball.getOffsetX(true)<=target.x+target.widht) && ball.getOffsetY(true)>=target.y){
             endGame(moveBallInterval,"SUCCESS");
         }
+
         ball.fillStyle=changeColor[1+Math.floor(Math.random()*6)];
         drawAll();
     }
@@ -134,7 +134,6 @@ function makeGameComponet(startX, startY, ctx){
     }
 
     return {  drawAll:drawAll
-            , drawShapeEach : drawShapeEach
             , isInShapeArea: isInShapeArea
             , resetPosition: resetPosition
             , moveBall : moveBall
