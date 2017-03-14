@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>슬링샷</title>
 </head>
 <style>
-    body{
-        overflow: hidden;
-    }
 
+    html, body { width:100%; height:100%;
+        overflow:  hidden;} /* just to be sure these are full screen*/
+
+    #canvas{
+        display: block;
+    }
 </style>
 <body>
-
-<canvas id="canvas" width="1200" height="400">
+<canvas id="canvas" width="1000" height="500">
 </canvas>
-
 <br/>
 <!--<form action="" id="f" onSubmit="return fire();">
     속도, 각도를 지정하고 대포를 발사<br/>
@@ -24,68 +26,55 @@
 </form>
 -->
 <script src="../../dist/js/sling.js"> </script>
+<script src="../../dist/js/makeGame.js"> </script>
 <script>
     "use strict";
-
    window.onload=function(){
         let movePossible=false;
         let canvas=document.getElementById("canvas");
         let ctx=canvas.getContext("2d");
         let horvelocity=0;
         let verticalvelBefore=0;
-       let verticalvelAfter=0;
+        let verticalvelAfter=0;
         let moveBallInterval;
+        //시작 위치
+        let startX=100;
+        let startY=240;
+
+//       ctx.canvas.width  = window.innerWidth-10;
+//       ctx.canvas.height = 500;
+//       //게임 오브젝트 생성 및 그리기
+       var gameComponent=makeGameComponet(startX,startY, ctx );
+       gameComponent.drawAll();
 
         //addEventListner
        canvas.addEventListener("mousedown", findball, false);
        canvas.addEventListener("mousemove", moveit, false);
        canvas.addEventListener("mouseup", finish, false);
 
-       //시작 위치
-       let startX=100;
-       let startY=240;
-
-        //게임 오브젝트 생성
-       let gameObject=makeGameObject();
-
-       //객체 그리기
-       drawAll();
-
        function findball(e){
-            let ball=gameObject.get("ball");
-
-            if(isInShapeArea(getClientX(e), getClientY(e), ball)){
+            if(gameComponent.isInShapeArea(getClientX(e), getClientY(e), componet.BALL)){
                 movePossible=true;
-                console.log("dddd");
-                drawAll();
+                gameComponent.drawAll();
             };
-
-            function isInShapeArea(x, y, shape){
-           console.log(x,y);
-                return ((x>shape.x && x<shape.getOffsetX()) && (y>shape.y && y<shape.getOffsetY()) );
-            }
 
        }
 
        function moveit(e){
-
            let mX=getClientX(e);
            let mY=getClientY(e);
-
            if(movePossible){
-
-               gameObject.get("ball").moveShape(mX, mY);
-               gameObject.get("sling").moveShape(mX, mY);
-               drawAll();
+               gameComponent.resetPosition(mX, mY, componet.BALL);
+               gameComponent.resetPosition(mX, mY, componet.SLING);
+               gameComponent.drawAll();
            }
        }
 
        //어렵;;
        function finish(e){
            if(movePossible){
-               let sling=gameObject.get("sling");
-               let outofcannon=distsq(sling.x, sling.y , sling.s1x, sling.s1y)/700;
-               let angleradians=-Math.atan2(sling.s1y-sling.y, sling.s1x-sling.x);
+               let outofcannon=gameComponent.getOut0fCannon();
+               let angleradians=gameComponent.getAngleRadians();
                horvelocity=outofcannon*Math.cos(angleradians);
                verticalvelBefore=-outofcannon*Math.sin(angleradians);
                moveBallInterval=setInterval(change, 100);
@@ -98,26 +87,9 @@
            verticalvelAfter=verticalvelBefore+2;
            let dy=(verticalvelBefore+verticalvelAfter)*0.5;
            verticalvelBefore=verticalvelAfter;
-           let ball=gameObject.get("ball");
-           ball.moveball(dx, dy)
-          // if(ball.x){
 
-           //}
-
-           drawAll();
-
-       }
-
-       function distsq(x, y, x1, y1){
-           return (x-x1)*(x-x1)+(y-y1)*(y-y1);
-       }
-
-       function drawAll(){
-           //현재 캔버스 지우기
-           ctx.clearRect(0, 0, canvas.width, canvas.height);
-           gameObject.forEach(function(value, key) {
-               gameObject.get(key).drawShape();
-           });
+           gameComponent.moveBall(dx, dy, moveBallInterval, canvas);
+           gameComponent.resetPosition(startX, startY, componet.SLING);
        }
 
        function getClientX(e){
@@ -127,49 +99,7 @@
            return e.clientY-canvas.offsetTop;
        }
 
-       function makeGameObject(){
-           //도형속성
-           let shapeConfig={
-                 x:startX
-               , y:startY
-               , shapeRad:10
-               , width:1200
-               , height:30
-               , fillStyle:"yellow"
-           };
-
-           //object 생성
-           let ball=new Circle(shapeConfig, ctx);
-
-           shapeConfig.x=0, shapeConfig.y=370, shapeConfig.width=1200, shapeConfig.height=30, shapeConfig.fillStyle="blue";
-           let ground= new Rect(shapeConfig, ctx);
-
-           shapeConfig.x=700, shapeConfig.y=210, shapeConfig.width=209, shapeConfig.height=179, shapeConfig.fillStyle="green";
-           let target=new Rect(shapeConfig, ctx);
-
-           shapeConfig.x=startX, shapeConfig.y=startY,
-               shapeConfig.s1x=startX+80, shapeConfig.s1y=startY-10,
-               shapeConfig.s2x=startX+80, shapeConfig.s2y=startY+10,
-               shapeConfig.s3x=startX+70, shapeConfig.s3y=startY+180,
-               shapeConfig.fillStyle="red";
-           let sling=new Sling(shapeConfig, ctx);
-
-           //map에 담기
-           let objectMap=new Map();
-           objectMap.set("ball", ball);
-           objectMap.set("ground", ground);
-//나중에 하자....
-//           objectMap.set("target", target);
-           objectMap.set("sling", sling);
-           return objectMap;
-       };
-
    }
-
-
-
-
-
 
 </script>
 </body>

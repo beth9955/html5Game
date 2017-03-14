@@ -9,10 +9,9 @@ class Shape{
         this.ctx=ctx;
     }
 
-     moveShape(mx, my){
+    resetPosition(mx, my){
          this.x = mx;
          this.y = my;
-         return this;
     }
 
 }
@@ -25,21 +24,19 @@ class Circle extends Shape{
 
     drawShape(){
          //원일때만 좌표 옮기기
-        this.ctx.translate(+this.shapeRad, +this.shapeRad);
         this.ctx.beginPath();
         this.ctx.arc(this.x,this.y,this.shapeRad, Math.PI*2, false);
         this.ctx.closePath();
         this.ctx.fillStyle=this.fillStyle;
         this.ctx.fill();
-        this.ctx.translate(-this.shapeRad, -this.shapeRad);
     }
 
-    getOffsetX(){
-        return this.x+this.shapeRad*2;
+    getOffsetX(isStart){
+        return isStart? this.x-this.shapeRad : this.x+this.shapeRad;
     }
 
-    getOffsetY(){
-        return this.y+this.shapeRad*2;
+    getOffsetY(isStart){
+        return isStart? this.y-this.shapeRad : this.y+this.shapeRad;
     }
 
     moveball(x, y){
