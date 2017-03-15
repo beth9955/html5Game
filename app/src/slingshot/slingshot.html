@@ -32,19 +32,17 @@
     this website is only viewable<br> in landscape mode
 </div>
 <div id="wrapper">
-    공을 당겨보세요!!
-    <canvas id="canvas" width="1000" height="500">
+
+    <canvas id="canvas">
     </canvas>
+    공을 당겨보세요!!
 </div>
 <br/>
 <script src="../../dist/js/sling.js"> </script>
 <script src="../../dist/js/makeGame.js"> </script>
 <script>
 
-
-
     "use strict";
-
     window.onload=function(){
         let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
@@ -59,7 +57,7 @@
         let verticalvelAfter=0;
         let moveBallInterval;
         let startX=100;
-        let startY=200;
+        let startY=150;
 
        //게임 오브젝트 생성 및 그리기
         let gameComponent=makeGameComponet(startX,startY, ctx );

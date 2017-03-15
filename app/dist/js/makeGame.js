@@ -28,7 +28,7 @@ function makeGameComponet(startX, startY, ctx) {
     //땅만들기
     shapeConfig = {
         x: 0,
-        y: 270,
+        y: 250,
         width: 500,
         height: 30,
         fillStyle: "green"
@@ -54,7 +54,7 @@ function makeGameComponet(startX, startY, ctx) {
         s2x: startX + 80,
         s2y: startY + 10,
         s3x: startX + 80,
-        s3y: startY + 70,
+        s3y: startY + 100,
         fillStyle: "gray"
     };
     var sling = new Sling(shapeConfig, ctx);
@@ -111,7 +111,7 @@ function makeGameComponet(startX, startY, ctx) {
 
     function isInShapeArea(x, y, shape) {
         var target = objectMap.get(shape);
-        return x > target.getOffsetX(true) && x < target.getOffsetX(false) && y > target.getOffsetY(true) && y < target.getOffsetY();
+        return x > target.getOffsetX(true) && x < target.getOffsetX(false) && y > target.getOffsetY(true) && y < target.getOffsetY(false);
     }
 
     function resetPosition(x, y, shape) {
