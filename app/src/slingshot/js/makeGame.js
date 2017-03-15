@@ -26,9 +26,9 @@ function makeGameComponet(startX, startY, ctx){
     //땅만들기
     shapeConfig={
         x:0
-        , y:250
+        , y:230
         , width:500
-        , height:30
+        , height:50
         , fillStyle:"green"
     }
     let ground= new Rect(shapeConfig, ctx);
@@ -53,7 +53,7 @@ function makeGameComponet(startX, startY, ctx){
         , s2x:startX+80
         , s2y:startY+10
         , s3x:startX+80
-        , s3y:startY+100
+        , s3y:startY+130
         , fillStyle:"gray"
     }
     let sling=new Sling(shapeConfig, ctx);
