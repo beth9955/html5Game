@@ -26,7 +26,7 @@ function makeGameComponet(startX, startY, ctx){
     //땅만들기
     shapeConfig={
         x:0
-        , y:220
+        , y:270
         , width:500
         , height:30
         , fillStyle:"green"
@@ -38,7 +38,7 @@ function makeGameComponet(startX, startY, ctx){
          width:50
         , height:150
         , x:450
-        , y:70
+        , y:120
         , fillStyle:"red"
     }
     let target=new Rect(shapeConfig, ctx);
@@ -81,8 +81,8 @@ function makeGameComponet(startX, startY, ctx){
     function moveBall(x, y, moveBallInterval, canvas){
 
         ball.moveball(x, y);
-
         //볼 범위 유효성 검사하기-땅에 닫는지
+
         if(ball.getOffsetY(true)>=ground.y){
             endGame(moveBallInterval,"TRY AGAIN");
         }
