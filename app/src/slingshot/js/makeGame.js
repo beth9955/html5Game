@@ -26,8 +26,8 @@ function makeGameComponet(startX, startY, ctx){
     //땅만들기
     shapeConfig={
         x:0
-        , y:370
-        , width:1200
+        , y:220
+        , width:500
         , height:30
         , fillStyle:"green"
     }
@@ -35,10 +35,10 @@ function makeGameComponet(startX, startY, ctx){
 
     //타켓만들기
     shapeConfig={
-        x:700
-        , y:210
-        , width:209
-        , height:179
+         width:50
+        , height:150
+        , x:450
+        , y:70
         , fillStyle:"red"
     }
     let target=new Rect(shapeConfig, ctx);
@@ -53,8 +53,8 @@ function makeGameComponet(startX, startY, ctx){
         , s2x:startX+80
         , s2y:startY+10
         , s3x:startX+80
-        , s3y:startY+130+ground.height
-        , fillStyle:"red"
+        , s3y:startY+70
+        , fillStyle:"gray"
     }
     let sling=new Sling(shapeConfig, ctx);
 
@@ -69,18 +69,17 @@ function makeGameComponet(startX, startY, ctx){
         //현재 캔버스 지우기
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         objectMap.forEach(function(value, key) {
-            drawShapeEach(key);
+            objectMap.get(key).drawShape();
         });
     }
-
-    function drawShapeEach(shape){
-        objectMap.get(shape).drawShape();
-    }
+    //
+    // function drawShapeEach(shape){
+    //     objectMap.get(shape).drawShape();
+    // }
 
 
     function moveBall(x, y, moveBallInterval, canvas){
 
-       let ball=objectMap.get(componet.BALL);
         ball.moveball(x, y);
 
         //볼 범위 유효성 검사하기-땅에 닫는지
@@ -105,6 +104,7 @@ function makeGameComponet(startX, startY, ctx){
     function endGame(moveBallInterval, message){
         alert(message);
         clearInterval(moveBallInterval);
+        cancelAnimationFrame(moveBallInterval);
         ball.resetPosition(startX, startY);
     }
 
@@ -118,13 +118,11 @@ function makeGameComponet(startX, startY, ctx){
     }
 
     function getOut0fCannon(){
-        let sling=objectMap.get(componet.SLING);
         return distsq(sling.x, sling.y , sling.s1x, sling.s1y)/700;
     }
 
 
     function getAngleRadians(){
-        let sling=objectMap.get(componet.SLING);
         return -Math.atan2(sling.s1y-sling.y, sling.s1x-sling.x);
     }
 

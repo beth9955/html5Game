@@ -44,7 +44,6 @@ var Circle = function (_Shape) {
     _createClass(Circle, [{
         key: "drawShape",
         value: function drawShape() {
-            //원일때만 좌표 옮기기
             this.ctx.beginPath();
             this.ctx.arc(this.x, this.y, this.shapeRad, Math.PI * 2, false);
             this.ctx.closePath();

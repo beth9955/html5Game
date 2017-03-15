@@ -13,35 +13,63 @@
     #canvas{
         display: block;
     }
+
+    #warning-message { display: none; }
+    @media only screen and (orientation:portrait){
+        #wrapper { display:none; }
+        #warning-message { display:block; }
+    }
+    @media only screen and (orientation:landscape){
+        #warning-message { display:none; }
+    }
 </style>
 <body>
-<canvas id="canvas" width="1000" height="500">
-</canvas>
+
+<div id="warning-message">
+    this website is only viewable<br> in landscape mode
+</div>
+<div id="wrapper">
+    공을 마우스로 당겨보세요!!
+    <canvas id="canvas" width="1000" height="500">
+    </canvas>
+</div>
 <br/>
 <script src="../../dist/js/sling.js"> </script>
 <script src="../../dist/js/makeGame.js"> </script>
 <script>
+
+
+
     "use strict";
-   window.onload=function(){
+
+    window.onload=function(){
+        let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
         let movePossible=false;
         let canvas=document.getElementById("canvas");
+        canvas.width = 600;
+        canvas.height = 300;
+
         let ctx=canvas.getContext("2d");
         let horvelocity=0;
         let verticalvelBefore=0;
         let verticalvelAfter=0;
         let moveBallInterval;
         let startX=100;
-        let startY=240;
+        let startY=150;
 
        //게임 오브젝트 생성 및 그리기
-       var gameComponent=makeGameComponet(startX,startY, ctx );
-       gameComponent.drawAll();
+        let gameComponent=makeGameComponet(startX,startY, ctx );
+        gameComponent.drawAll();
 
         //addEventListner
        canvas.addEventListener("mousedown", findball, false);
        canvas.addEventListener("mousemove", moveit, false);
        canvas.addEventListener("mouseup", finish, false);
+
+        canvas.addEventListener("touchstart", findball, false);
+        canvas.addEventListener("touchmove", moveit, false);
+        canvas.addEventListener("touchend", finish, false);
 
        function findball(e){
             if(gameComponent.isInShapeArea(getClientX(e), getClientY(e), componet.BALL)){
@@ -68,7 +96,9 @@
                let angleradians=gameComponent.getAngleRadians();
                horvelocity=outofcannon*Math.cos(angleradians);
                verticalvelBefore=-outofcannon*Math.sin(angleradians);
-               moveBallInterval=setInterval(change, 100);
+               //moveBallInterval=setInterval(change, 100);
+               //moveBallInterval=requestAnimationFrame(change);
+               change();
                movePossible=false;
            }
        }
@@ -78,16 +108,18 @@
            verticalvelAfter=verticalvelBefore+2;
            let dy=(verticalvelBefore+verticalvelAfter)*0.5;
            verticalvelBefore=verticalvelAfter;
+           moveBallInterval=requestAnimationFrame(change);
            gameComponent.moveBall(dx, dy, moveBallInterval, canvas);
            gameComponent.resetPosition(startX, startY, componet.SLING);
+
        }
 
        function getClientX(e){
-           return e.clientX-canvas.offsetLeft;
+           return e.clientX || e.touches[0].clientX-canvas.offsetLeft;
        }
 
        function getClientY(e){
-           return e.clientY-canvas.offsetTop;
+           return e.clientY || e.touches[0].clientY-canvas.offsetTop;
        }
 
    }
