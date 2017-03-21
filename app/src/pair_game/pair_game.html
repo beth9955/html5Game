@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pair game</title>
+</head>
+<body>
+<canvas width="400" height="400" id="canvas">
+    이 브라우저는 HTML5의 canvas요소를 지원하지 않습니다.
+</canvas>
+<br>
+두 개의 카드를 클릭해서 서로 맞는지 확인하세요.
+<form action="" name="f">
+    <input type="text" name="count" value="0" size="1">
+    <input type="text" name="eclapsed" value="" size="4">
+</form>
+<script>
+    var ctx;
+    var canvas;
+    var startTime;
+    var endTime;
+
+    const CARD_BACK_COLOR="yellow";
+    const CARDS_DECK_NUM=12;
+    const CARD_DECK = new Array(CARDS_DECK_NUM);
+    const START_X=50;
+    const START_Y=50;
+    const CARD_MARGIN=10;
+    const CARD_HEIGHT=50;
+    const CARD_WIDTH=30;
+
+    window.onload=function(){
+        canvas=document.getElementById("canvas");
+        ctx=canvas.getContext("2d");
+        makeDeck();
+        shuffle();
+        showTextOnCanvas();
+        startTime=getMilliTime();
+        canvas.addEventListener("click", choose, false);
+    }
+
+    function choose(event){
+        //http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/ 참조
+    }
+
+    function makeDeck(){
+        var card;
+        var startX=START_X;
+        var startY=START_Y;
+
+        for(var i=0; i<CARDS_DECK_NUM; i++){
+            card=new Card(startX, startY, i);
+            CARD_DECK[i] =card;
+            card.draw();
+
+            if(i<5){
+                startX +=CARD_MARGIN+CARD_WIDTH;
+            }
+            if(i==5){
+                startX =START_X;
+                startY +=CARD_MARGIN+CARD_HEIGHT;
+            }
+            if(i>5){
+                startX +=CARD_MARGIN+CARD_WIDTH;
+            }
+
+        }
+    }
+
+    function showTextOnCanvas(){
+        ctx.font="bold 20pt sans-serif";
+        ctx.fillStyle="black";
+        ctx.fillText("맞춰볼 두 카드를 선택하세요", 20, 30);
+    }
+
+    function shuffle(){
+        var pickNum;
+        var holder
+        var count=0;
+
+        while(count<3){
+            shuffleCard();
+            ++count;
+        }
+
+        function shuffleCard(){
+            for(var i=0; i<CARDS_DECK_NUM; i++){
+                pickNum=Math.floor(Math.random()*CARDS_DECK_NUM);
+                holder=CARD_DECK[i];
+                CARD_DECK[i]=CARD_DECK[pickNum];
+                CARD_DECK[pickNum]=holder;
+            }
+        }
+
+    }
+    function Card(sx, sy, num){
+        this.sx=sx;
+        this.sy=sy;
+        this.info=num;
+        this.width=CARD_WIDTH;
+        this.height=CARD_HEIGHT;
+    }
+
+    Card.prototype.draw=function(){
+        ctx.fillStyle=CARD_BACK_COLOR;
+        ctx.fillRect(this.sx, this.sy, this.width,  this.height);
+    }
+
+    function getMilliTime(){
+        return Number(new Date().getTime());
+    }
+</script>
+</body>
+</html>

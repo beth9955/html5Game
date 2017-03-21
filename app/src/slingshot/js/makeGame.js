@@ -72,11 +72,6 @@ function makeGameComponet(startX, startY, ctx){
             objectMap.get(key).drawShape();
         });
     }
-    //
-    // function drawShapeEach(shape){
-    //     objectMap.get(shape).drawShape();
-    // }
-
 
     function moveBall(x, y, moveBallInterval, canvas){
 
