@@ -48,6 +48,7 @@
         showTextOnCanvas();
         startTime=getMilliTime();
         canvas.addEventListener("click", choose, false);
+        canvas.addEventListener("touchstart", choose, false);
     }
     
     //카드 만들기-도형
@@ -132,38 +133,50 @@
 
         CARD_DECK.forEach(function(card){
             if((mx>card.sx && mx<card.sx+CARD_WIDTH) && (my>card.sy && my<card.sy+CARD_HEIGHT) ){
-                console.log(card.info);
-
                 if(possibleClick){
                     if(firstPick){
                         secondPick=card;
+                        showCardNum(secondPick);
                     }else{
                         firstPick=card;
+                        showCardNum(firstPick);
+                        
                     }
 
                 }
 
             }
         });
+        
+        function showCardNum(card){
+            ctx.fillStyle="black";
+            ctx.fillText(card.info, card.sx+CARD_RAD*2, card.sy+CARD_RAD*2); 
+            setTimeout(function(){
+                ctx.fillStyle=CARD_BACK_COLOR;
+                ctx.fillRect(card.sx, card.sy, card.width, card.height);
+                matchCard();
+            }, 100);
+        }
 
 
-        if(firstPick && secondPick){
-            if(firstPick!=secondPick && firstPick.info===secondPick.info){
-                possibleClick=false;
-                firstPick.drawFront();
-                secondPick.drawFront();
-                setTimeout(function(){
-                    firstPick.drawBack("white");
-                    secondPick.drawBack("white");  
-                    firstPick=secondPick=null;
-                    possibleClick=true;
-                }, 1500);
-                showSuccess(++pairCount);
-            }else{
-                firstPick=null;
-                secondPick=null;
-            }
-
+        function matchCard(){
+            if(firstPick && secondPick){
+                if(firstPick!=secondPick && firstPick.info===secondPick.info){
+                    possibleClick=false;
+                    firstPick.drawFront();
+                    secondPick.drawFront();
+                    setTimeout(function(){
+                        firstPick.drawBack("white");
+                        secondPick.drawBack("white");  
+                        firstPick=secondPick=null;
+                        possibleClick=true;
+                    }, 1500);
+                    showSuccess(++pairCount);
+                }else{
+                    firstPick=null;
+                    secondPick=null;
+                }
+            }    
         }
 
         function showSuccess(pairCount){
