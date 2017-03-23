@@ -9,3 +9,6 @@
 
 3. [SLINGSHOT](https://beth9955.github.io/html5Game/app/src/slingshot/slingshot.html)
 --슬링샷! 볼을 날려 보자<br/>
+
+4. [Pair Game](https://beth9955.github.io/html5Game/app/src/pair_game/pair_game.html)
+--카드 짝 맞추기<br/>

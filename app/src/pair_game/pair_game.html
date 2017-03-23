@@ -5,74 +5,65 @@
     <title>pair game</title>
 </head>
 <body>
-<canvas width="400" height="400" id="canvas">
+<canvas height="400" id="canvas">
     이 브라우저는 HTML5의 canvas요소를 지원하지 않습니다.
 </canvas>
 <br>
-두 개의 카드를 클릭해서 서로 맞는지 확인하세요.
+    두 개의 카드를 클릭해서 서로 맞는지 확인하세요.<br><br>
 <form action="" name="f">
-    <input type="text" name="count" value="0" size="1">
-    <input type="text" name="eclapsed" value="" size="4">
+    <label for="count">일치 횟수</label> <input type="text" name="count" value="0" size="1"><br>
+    <label for="eclapsed">걸린 시간</label> <input type="text" name="eclapsed" value="" size="4">
 </form>
 <script>
     var ctx;
     var canvas;
+    var pairCount=0;
     var startTime;
-    var endTime;
-
+    var firstPick, secondPick;
+    var possibleClick=true;
+    
     const CARD_BACK_COLOR="yellow";
+    const CARD_FRONT_COLOR="skyblue";
     const CARDS_DECK_NUM=12;
     const CARD_DECK = new Array(CARDS_DECK_NUM);
     const START_X=50;
     const START_Y=50;
+    const CARD_RAD=30;
     const CARD_MARGIN=10;
-    const CARD_HEIGHT=50;
-    const CARD_WIDTH=30;
-
+    const CARD_HEIGHT=CARD_RAD*4;
+    const CARD_WIDTH=CARD_RAD*4;
+    const CARD_CENTER_HEIGHT=CARD_HEIGHT/2;
+    const CARD_CENTER_WIDTH=CARD_WIDTH/2;
+    
+    
     window.onload=function(){
         canvas=document.getElementById("canvas");
         ctx=canvas.getContext("2d");
+        canvas.width=window.innerWidth;
+        
+        
         makeDeck();
         shuffle();
+        drawDeck();
         showTextOnCanvas();
         startTime=getMilliTime();
         canvas.addEventListener("click", choose, false);
     }
-
-    function choose(event){
-        //http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/ 참조
-    }
-
+    
+    //카드 만들기-도형
     function makeDeck(){
         var card;
-        var startX=START_X;
-        var startY=START_Y;
-
+        var shapeInfo=3;
         for(var i=0; i<CARDS_DECK_NUM; i++){
-            card=new Card(startX, startY, i);
+            //도형 3~8각형
+            shapeInfo=(i<6) ? i+3 : i-3; 
+            card=new Card(shapeInfo);
             CARD_DECK[i] =card;
-            card.draw();
-
-            if(i<5){
-                startX +=CARD_MARGIN+CARD_WIDTH;
-            }
-            if(i==5){
-                startX =START_X;
-                startY +=CARD_MARGIN+CARD_HEIGHT;
-            }
-            if(i>5){
-                startX +=CARD_MARGIN+CARD_WIDTH;
-            }
-
         }
+        
     }
 
-    function showTextOnCanvas(){
-        ctx.font="bold 20pt sans-serif";
-        ctx.fillStyle="black";
-        ctx.fillText("맞춰볼 두 카드를 선택하세요", 20, 30);
-    }
-
+    //카드 순서 섞기
     function shuffle(){
         var pickNum;
         var holder
@@ -93,22 +84,136 @@
         }
 
     }
-    function Card(sx, sy, num){
-        this.sx=sx;
-        this.sy=sy;
-        this.info=num;
-        this.width=CARD_WIDTH;
-        this.height=CARD_HEIGHT;
+
+
+    //카드 그리기
+    function drawDeck(){
+        var card;
+        var startX=START_X;
+        var startY=START_Y;
+        for(var i=0; i<CARDS_DECK_NUM; i++){
+            card=CARD_DECK[i];
+            card.setPosition(startX, startY);
+            card.drawBack();
+            //카드 배치 x,y
+            if(i<5){
+                startX +=CARD_MARGIN+CARD_WIDTH;
+            }
+            if(i==5){
+                startX =START_X;
+                startY +=CARD_MARGIN+CARD_HEIGHT;
+            }
+            if(i>5){
+                startX +=CARD_MARGIN+CARD_WIDTH;
+            }
+            
+
+        }
     }
 
-    Card.prototype.draw=function(){
-        ctx.fillStyle=CARD_BACK_COLOR;
-        ctx.fillRect(this.sx, this.sy, this.width,  this.height);
+    //카드 설명 보여주기
+    function showTextOnCanvas(){
+        ctx.font="bold 20pt sans-serif";
+        ctx.fillStyle="black";
+        ctx.fillText("맞춰볼 두 카드를 선택하세요", 20, 30);
     }
 
+    //이벤트 클릭 bind
+    function choose(event){
+        var mx, my;
+        if(event.clientX || event.clientY){
+            mx=event.clientX-canvas.offsetTop;
+            my=event.clientY-canvas.offsetLeft;
+        }else{
+            mx=event.pageX-canvas.offsetTop;
+            my=event.pageY-canvas.offsetLeft;
+        }
+
+
+        CARD_DECK.forEach(function(card){
+            if((mx>card.sx && mx<card.sx+CARD_WIDTH) && (my>card.sy && my<card.sy+CARD_HEIGHT) ){
+                console.log(card.info);
+
+                if(possibleClick){
+                    if(firstPick){
+                        secondPick=card;
+                    }else{
+                        firstPick=card;
+                    }
+
+                }
+
+            }
+        });
+
+
+        if(firstPick && secondPick){
+            if(firstPick!=secondPick && firstPick.info===secondPick.info){
+                possibleClick=false;
+                firstPick.drawFront();
+                secondPick.drawFront();
+                setTimeout(function(){
+                    firstPick.drawBack("white");
+                    secondPick.drawBack("white");  
+                    firstPick=secondPick=null;
+                    possibleClick=true;
+                }, 1500);
+                showSuccess(++pairCount);
+            }else{
+                firstPick=null;
+                secondPick=null;
+            }
+
+        }
+
+        function showSuccess(pairCount){
+            if(pairCount===CARDS_DECK_NUM/2){
+                var eclipseTime=Math.floor(0.5+(getMilliTime()-startTime)/1000);
+                document.getElementsByName("eclapsed")[0].value=eclipseTime;
+            }
+            document.getElementsByName("count")[0].value=pairCount;
+        }
+
+    }
+
+    //milliSecond
     function getMilliTime(){
         return Number(new Date().getTime());
     }
+
+    //////////////////////////////////Card/////////////////////////////////////////////////////////
+    
+    function Card(shape){
+        this.info=shape;
+        this.width=CARD_WIDTH;
+        this.height=CARD_HEIGHT;
+        this.angle=2*Math.PI/this.info;
+        
+    }
+
+    Card.prototype.drawBack=function(color){
+        ctx.fillStyle=color || CARD_BACK_COLOR;
+        ctx.fillRect(this.sx, this.sy, this.width,  this.height);
+    }
+    
+    Card.prototype.drawFront=function(){
+        ctx.fillStyle=CARD_FRONT_COLOR;
+        ctx.beginPath();
+        ctx.moveTo(this.sx+CARD_CENTER_WIDTH+CARD_RAD*Math.cos(-0.5*this.angle), this.sy+CARD_CENTER_HEIGHT+CARD_RAD*Math.sin(-0.5*this.angle));
+        for(var i=1; i<this.info; i++){
+            ctx.lineTo(this.sx+CARD_CENTER_WIDTH+CARD_RAD*Math.cos((i-0.5)*this.angle), this.sy+CARD_CENTER_HEIGHT+CARD_RAD*Math.sin((i-0.5)*this.angle));
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    Card.prototype.setPosition=function(sx, sy){
+        this.sx=sx;
+        this.sy=sy;
+    }
+    
+    
+    
 </script>
 </body>
 </html>
