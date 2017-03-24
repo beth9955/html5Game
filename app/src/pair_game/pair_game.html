@@ -41,11 +41,12 @@
         canvas=document.getElementById("canvas");
         ctx=canvas.getContext("2d");
         canvas.width=window.innerWidth;
-        
+
+        showTextOnCanvas("맞춰볼 두 카드를 선택하세요");
         makeDeck();
         shuffle();
         drawDeck();
-        showTextOnCanvas();
+
         startTime=getMilliTime();
         canvas.addEventListener("click", choose, false);
         canvas.addEventListener("touchstart", choose, false);
@@ -113,10 +114,12 @@
     }
 
     //카드 설명 보여주기
-    function showTextOnCanvas(){
+    function showTextOnCanvas(text){
+        ctx.fillStyle="white";
+        ctx.fillRect(0,0, canvas.width, canvas.height);
         ctx.font="bold 20pt sans-serif";
         ctx.fillStyle="black";
-        ctx.fillText("맞춰볼 두 카드를 선택하세요", 20, 30);
+        ctx.fillText(text, START_X, START_Y-CARD_MARGIN);
     }
 
     //이벤트 클릭 bind
@@ -132,7 +135,7 @@
 
 
         CARD_DECK.forEach(function(card){
-            if((mx>card.sx && mx<card.sx+CARD_WIDTH) && (my>card.sy && my<card.sy+CARD_HEIGHT) ){
+            if((mx>card.sx && mx<card.sx+CARD_WIDTH) && (my>card.sy && my<card.sy+CARD_HEIGHT) && card.clickable){
                 if(possibleClick){
                     if(firstPick){
                         secondPick=card;
@@ -173,11 +176,10 @@
                         secondPick.drawBack("white");  
                         firstPick=secondPick=null;
                         possibleClick=true;
-                    }, 1000);
+                    }, 500);
                     showSuccess(++pairCount);
                 }else{
-                    firstPick=null;
-                    secondPick=null;
+                    firstPick=secondPick=null;
                 }
             }    
         }
@@ -188,6 +190,7 @@
                 //게임종료
                 var eclipseTime=Math.floor(0.5+(getMilliTime()-startTime)/1000);
                 document.getElementsByName("eclapsed")[0].value=eclipseTime;
+                showTextOnCanvas("SUCCESS");
                 canvas.removeEventListener("click", choose);
                 canvas.removeEventListener("touchstart", choose);
             }
@@ -205,6 +208,7 @@
     
     function Card(shape){
         this.info=shape;
+        this.clickable=true;
         this.width=CARD_WIDTH;
         this.height=CARD_HEIGHT;
         this.angle=2*Math.PI/this.info;
@@ -217,6 +221,7 @@
     }
     
     Card.prototype.drawFront=function(){
+        this.clickable=false;
         ctx.fillStyle=CARD_FRONT_COLOR;
         ctx.beginPath();
         ctx.moveTo(this.sx+CARD_CENTER_WIDTH+CARD_RAD*Math.cos(-0.5*this.angle), this.sy+CARD_CENTER_HEIGHT+CARD_RAD*Math.sin(-0.5*this.angle));
